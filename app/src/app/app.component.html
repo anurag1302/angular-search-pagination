@@ -1,0 +1,27 @@
+<h1>Hello World</h1>
+<input type="text" placeholder="Search" (keyup)="onKey($event)" />
+<div>
+  <p>Paging - page size = 10</p>
+  <button (click)="pageClick(1)">Page 1</button>
+  <button (click)="pageClick(2)">Page 2</button>
+  <button (click)="pageClick(3)">Page 3</button>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Brand</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of products">
+      <td>{{ item.id }}</td>
+      <td>{{ item.title }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{ item.brand }}</td>
+    </tr>
+  </tbody>
+</table>
+<router-outlet></router-outlet>
