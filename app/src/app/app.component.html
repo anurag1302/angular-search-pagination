@@ -1,27 +1,79 @@
-<h1>Hello World</h1>
-<input type="text" placeholder="Search" (keyup)="onKey($event)" />
-<div>
-  <p>Paging - page size = 10</p>
-  <button (click)="pageClick(1)">Page 1</button>
-  <button (click)="pageClick(2)">Page 2</button>
-  <button (click)="pageClick(3)">Page 3</button>
+<div class="container my-5">
+  <div class="row">
+    <div class="col">
+      <h1 class="mb-4">Products Table</h1>
+
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search..."
+          (keyup)="onKey($event)"
+        />
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+        >
+          Items: {{ options.limit }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <button class="dropdown-item" type="button" (click)="size(10)">
+              10
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" (click)="size(20)">
+              20
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" (click)="size(30)">
+              30
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card mb-3" *ngIf="products">
+        <div class="card-body">
+          <table class="table" style="table-layout: fixed">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Brand</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products">
+                <td>{{ product.id }}</td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.brand }}</td>
+              </tr>
+              <tr *ngIf="!products.length">
+                <td colspan="5" class="text-center p-5">No records found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <nav *ngIf="numbers.length >= 1">
+        <ul class="pagination justify-content-center">
+          <li id="prev" class="page-item">
+            <a class="page-link" href="#" (click)="previous()">Previous</a>
+          </li>
+          <li id="next" class="page-item">
+            <a class="page-link" href="#" (click)="next()">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 </div>
-<table>
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Brand</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of products">
-      <td>{{ item.id }}</td>
-      <td>{{ item.title }}</td>
-      <td>{{ item.description }}</td>
-      <td>{{ item.brand }}</td>
-    </tr>
-  </tbody>
-</table>
+
 <router-outlet></router-outlet>

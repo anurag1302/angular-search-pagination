@@ -6,3 +6,9 @@ export interface ApiResponse {
   total: number;
   products: Product[];
 }
+
+export interface Options {
+  search: string;
+  limit: number;
+  skip: number;
+}
