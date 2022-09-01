@@ -4,36 +4,7 @@
       <h1 class="mb-4">Products Table</h1>
 
       <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Search..."
-          (keyup)="onKey($event)"
-        />
-        <button
-          class="btn btn-outline-secondary dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-        >
-          Items: {{ options.limit }}
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <button class="dropdown-item" type="button" (click)="size(10)">
-              10
-            </button>
-          </li>
-          <li>
-            <button class="dropdown-item" type="button" (click)="size(20)">
-              20
-            </button>
-          </li>
-          <li>
-            <button class="dropdown-item" type="button" (click)="size(30)">
-              30
-            </button>
-          </li>
-        </ul>
+        <input type="text" class="form-control" placeholder="Search..." />
       </div>
 
       <div class="card mb-3" *ngIf="products">
@@ -48,11 +19,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let product of products">
-                <td>{{ product.id }}</td>
+              <tr *ngFor="let product of products; index as i">
+                <td>{{ i + 1 + (page - 1) * pageSize }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.brand }}</td>
+                <td><img src="{{ product.thumbnail }}" /></td>
               </tr>
               <tr *ngIf="!products.length">
                 <td colspan="5" class="text-center p-5">No records found</td>
@@ -62,16 +34,25 @@
         </div>
       </div>
 
-      <nav *ngIf="numbers.length >= 1">
-        <ul class="pagination justify-content-center">
-          <li id="prev" class="page-item">
-            <a class="page-link" href="#" (click)="previous()">Previous</a>
-          </li>
-          <li id="next" class="page-item">
-            <a class="page-link" href="#" (click)="next()">Next</a>
-          </li>
-        </ul>
-      </nav>
+      <div class="d-flex justify-content-between p-2">
+        <ngb-pagination
+          [collectionSize]="collectionSize"
+          [(page)]="page"
+          [pageSize]="pageSize"
+          (pageChange)="refreshProducts()"
+        >
+        </ngb-pagination>
+        <select
+          class="form-select"
+          style="width: auto"
+          [(ngModel)]="pageSize"
+          (ngModelChange)="refreshProducts()"
+        >
+          <option [ngValue]="5">5 items per page</option>
+          <option [ngValue]="10">10 items per page</option>
+          <option [ngValue]="15">15 items per page</option>
+        </select>
+      </div>
     </div>
   </div>
 </div>

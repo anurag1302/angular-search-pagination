@@ -20,10 +20,4 @@ export class ProductsService {
   searchProducts(query: string): Observable<ApiResponse> {
     return this.http.get<ApiResponse>(this.API_URL + '/search?q=' + query);
   }
-
-  pagedProducts(skip: number, limit: number): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(
-      this.API_URL + '?skip=' + skip + '&limit=' + limit
-    );
-  }
 }

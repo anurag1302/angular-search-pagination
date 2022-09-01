@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Options } from 'src/models/apiresponse';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/models/product';
 import { ProductsService } from 'src/services/products.service';
 
@@ -8,51 +7,36 @@ import { ProductsService } from 'src/services/products.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   products: Product[] = [];
+  page = 1;
+  collectionSize = 0;
+  pageSize = 5;
 
-  options: Options = {
-    skip: 0,
-    search: '',
-    limit: 30,
-  };
-
-  constructor(private productsService: ProductsService) {
-    this.pageClick(this.options.skip, this.options.limit);
+  constructor(private productsService: ProductsService) {}
+  ngOnInit(): void {
+    this.loadProducts();
   }
 
-  get numbers(): number[] {
-    const limit = Math.ceil(this.products.length / this.options.limit);
-    return Array.from({ length: limit }, (_, i) => i + 1);
-  }
-
-  onKey(event: any) {
-    let value = event.target.value;
-    this.productsService.searchProducts(value).subscribe((data) => {
-      this.products = data.products;
+  loadProducts() {
+    this.productsService.getProducts().subscribe((x) => {
+      this.products = x.products;
+      this.collectionSize = x.products.length;
+      localStorage.setItem('products', JSON.stringify(x.products));
+      this.refreshProducts();
     });
   }
 
-  pageClick(skip: number, limit: number) {
-    this.productsService.pagedProducts(skip, limit).subscribe((data) => {
-      this.products = data.products;
-    });
-  }
-
-  size(limit: number) {
-    this.options.limit = limit;
-    this.options.skip = 0;
-    this.pageClick(0, limit);
-  }
-
-  next() {
-    this.options.skip = this.options.skip + this.options.limit;
-    this.pageClick(this.options.skip, this.options.limit);
-  }
-
-  previous() {
-    this.options.skip = this.options.skip - this.options.limit;
-    this.pageClick(this.options.skip, this.options.limit);
+  refreshProducts() {
+    let productsFromLocalStorage = JSON.parse(
+      localStorage.getItem('products') as string
+    );
+    this.products = productsFromLocalStorage
+      .map((product: any, i: number) => ({ id: i + 1, ...product }))
+      .slice(
+        (this.page - 1) * this.pageSize,
+        (this.page - 1) * this.pageSize + this.pageSize
+      );
   }
 }
