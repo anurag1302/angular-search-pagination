@@ -1,2 +1,2 @@
-# angular-search-sort-pagination
-This repo is to demonstrate search, sort, pagination in an Angular app
+# angular-search-pagination
+This repo is to demonstrate list, search, pagination in an Angular app
