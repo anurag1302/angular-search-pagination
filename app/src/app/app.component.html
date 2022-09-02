@@ -4,7 +4,12 @@
       <h1 class="mb-4">Products Table</h1>
 
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Search..." />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search..."
+          (keyup)="search($event)"
+        />
       </div>
 
       <div class="card mb-3" *ngIf="products">

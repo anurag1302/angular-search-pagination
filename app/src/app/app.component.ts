@@ -39,4 +39,14 @@ export class AppComponent implements OnInit {
         (this.page - 1) * this.pageSize + this.pageSize
       );
   }
+
+  search(event: any) {
+    let searchText = event.target.value;
+    this.productsService.searchProducts(searchText).subscribe((x) => {
+      this.products = x.products;
+      this.collectionSize = x.products.length;
+      localStorage.setItem('products', JSON.stringify(x.products));
+      this.refreshProducts();
+    });
+  }
 }
