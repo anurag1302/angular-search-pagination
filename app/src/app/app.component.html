@@ -17,15 +17,21 @@
           <table class="table" style="table-layout: fixed">
             <thead>
               <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Brand</th>
+                <th scope="col" sortable="id" (sort)="onSort($event)">Id</th>
+                <th scope="col" sortable="title" (sort)="onSort($event)">
+                  Title
+                </th>
+                <th scope="col" sortable="description" (sort)="onSort($event)">
+                  Description
+                </th>
+                <th scope="col" sortable="brand" (sort)="onSort($event)">
+                  Brand
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let product of products; index as i">
-                <td>{{ i + 1 + (page - 1) * pageSize }}</td>
+                <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.brand }}</td>
