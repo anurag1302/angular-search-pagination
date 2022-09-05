@@ -9,23 +9,17 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { Product } from 'src/models/product';
+import { SortColumn, SortDirection, SortEvent } from 'src/models/sortevent';
 import { ProductsService } from 'src/services/products.service';
 
-export type SortColumn = keyof Product | '';
-export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = {
   asc: 'desc',
-  desc: '',
+  desc: 'asc',
   '': 'asc',
 };
 
-const compare = (v1: string | number, v2: string | number) =>
-  v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
-
-export interface SortEvent {
-  column: SortColumn;
-  direction: SortDirection;
-}
+const compare = (param1: string | number, param2: string | number) =>
+  param1 < param2 ? -1 : param1 > param2 ? 1 : 0;
 
 @Directive({
   selector: 'th[sortable]',
@@ -75,7 +69,11 @@ export class AppComponent implements OnInit {
     let productsFromLocalStorage = JSON.parse(
       localStorage.getItem('products') as string
     );
-    this.products = productsFromLocalStorage
+    this.mapAndSliceProducts(productsFromLocalStorage);
+  }
+
+  mapAndSliceProducts(products: any) {
+    this.products = products
       .map((product: any, i: number) => ({ id: i + 1, ...product }))
       .slice(
         (this.page - 1) * this.pageSize,
