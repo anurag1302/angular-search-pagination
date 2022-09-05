@@ -8,7 +8,6 @@ import { ProductsService } from 'src/services/products.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'app';
   products: Product[] = [];
   page = 1;
   collectionSize = 0;
